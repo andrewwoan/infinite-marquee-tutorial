@@ -1,64 +1,48 @@
-let textArray = document.getElementsByClassName("item");
-let test = document.querySelector(".item");
+const lerp = (current, target, factor) =>
+    current * (1 - factor) + target * factor;
 
-for (let i = 0; i < textArray.length; i++) {
-    textArray[i].innerHTML = textArray[i].innerHTML
-        .split("")
-        .map((character) => {
-            return `<span class="hover">${character}</span>`;
-        })
-        .join("");
+class LoopingText {
+    constructor(DOMElements) {
+        this.DOMElements = DOMElements;
+        console.log(this.DOMElements);
+        this.counter = 0;
+        this.counter2 = 100;
+        this.direction = true;
+        this.speed = 0.3;
+        this.render();
+        this.onScroll();
+    }
+
+    onScroll() {
+        window.addEventListener("wheel", (e) => {
+            if (e.deltaY === 50) {
+                direction = true;
+            } else if (e.deltaY === -50) {
+                direction = false;
+            }
+        });
+    }
+
+    render() {
+        console.log(this.counter, this.counter2);
+
+        if (this.counter < 100) {
+            this.counter += this.speed;
+            this.DOMElements[0].style.transform = `translate(${this.counter}%, 0%)`;
+        } else {
+            this.counter = -100;
+        }
+
+        if (this.counter2 < 100) {
+            this.counter2 += this.speed;
+            this.DOMElements[1].style.transform = `translate(${this.counter2}%, 0%)`;
+        } else {
+            this.counter2 = -100;
+        }
+
+        window.requestAnimationFrame(() => this.render());
+    }
 }
 
-let counter = 0;
-let counter2 = -100;
-let direction = true;
-window.addEventListener("wheel", (e) => {
-    if (e.deltaY === 100) {
-        direction = true;
-    } else if (e.deltaY === -100) {
-        direction = false;
-    }
-});
-render = () => {
-    console.log(counter, counter2);
-    if (direction) {
-        counter += 1 * 0.05;
-        counter2 += 1 * 0.05;
-
-        if (counter < 100) {
-            textArray[0].style.transform = `translate(${counter}%,0%)`;
-        } else {
-            counter = -100;
-            textArray[0].style.transform = `translate(${counter}%,0%)`;
-        }
-
-        if (counter2 < 100) {
-            textArray[1].style.transform = `translate(${counter2}%,0%)`;
-        } else {
-            counter2 = -100;
-            textArray[1].style.transform = `translate(${counter2},0%)`;
-        }
-    } else {
-        counter -= 1 * 0.05;
-        counter2 -= 1 * 0.05;
-
-        if (counter < 100) {
-            textArray[0].style.transform = `translate(${counter2}%,0%)`;
-        } else {
-            counter = 100;
-            textArray[0].style.transform = `translate(${counter2}%,0%)`;
-        }
-
-        if (counter2 < 100) {
-            textArray[1].style.transform = `translate(${counter}%,0%)`;
-        } else {
-            counter2 = 100;
-            textArray[1].style.transform = `translate(${counter1},0%)`;
-        }
-    }
-
-    window.requestAnimationFrame(() => render());
-};
-
-render();
+let textArray = document.getElementsByClassName("item");
+new LoopingText(textArray);

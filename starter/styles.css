@@ -20,29 +20,22 @@ body {
     width: 100%;
 }
 
-.item {
-    padding-right: 50px;
-}
-
 .loop-container {
     position: relative;
     width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 
-.hero-section div:nth-child(1) {
+.item {
     position: absolute;
     font-size: 7rem;
     white-space: nowrap;
+    padding-right: 24px;
 }
 
-.hero-section div:nth-child(2) {
+.item2 {
     position: absolute;
     font-size: 7rem;
     white-space: nowrap;
-    transform: translateX(102%);
 }
 
 span {
