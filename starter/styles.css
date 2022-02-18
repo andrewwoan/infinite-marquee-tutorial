@@ -21,12 +21,9 @@ body {
     margin: auto 0;
     white-space: nowrap;
     font: 500 9vw/1 "Poppins";
-}
-
-.item:first-child {
-    position: absolute;
-    transform: translateX(-100%);
+    /* transform: rotate(7deg); */
 }
 
 .item {
+    position: absolute;
 }
