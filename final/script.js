@@ -6,7 +6,7 @@ const lerp = (current, target, factor) => {
     return holder;
 };
 
-class LoopingText {
+class LoopingElement {
     constructor(el, currentTranslation, speed, interpolationFactor) {
         this.el = el;
         this.currentTranslation = currentTranslation;
@@ -52,5 +52,5 @@ class LoopingText {
 
 let elements = document.querySelectorAll(".item");
 
-new LoopingText(elements[0], -100, 0.15, 0.1);
-new LoopingText(elements[1], 0, 0.15, 0.1);
+new LoopingElement(elements[0], -100, 0.15, 0.1);
+new LoopingElement(elements[1], 0, 0.15, 0.1);
