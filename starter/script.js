@@ -1,48 +1,54 @@
-const lerp = (current, target, factor) =>
-    current * (1 - factor) + target * factor;
+const lerp = (current, target, factor) => {
+    let holder = current * (1 - factor) + target * factor;
+    holder = parseFloat(holder).toFixed(2);
+    return holder;
+};
 
 class LoopingText {
-    constructor(DOMElements) {
-        this.DOMElements = DOMElements;
-        console.log(this.DOMElements);
-        this.counter = 0;
-        this.counter2 = 100;
-        this.direction = true;
-        this.speed = 0.3;
-        this.render();
+    constructor(el, currentTranslation, speed, interpolationFactor) {
+        this.el = el;
+        this.currentTranslation = currentTranslation;
+        this.lerp = {
+            current: this.currentTranslation,
+            target: this.currentTranslation,
+        };
+        this.interpolationFactor = interpolationFactor;
+        this.speed = speed;
+        this.metric = 100;
+
         this.onScroll();
+        this.render();
     }
 
     onScroll() {
-        window.addEventListener("wheel", (e) => {
-            if (e.deltaY === 50) {
-                direction = true;
-            } else if (e.deltaY === -50) {
-                direction = false;
-            }
+        window.addEventListener("scroll", () => {
+            this.lerp.target += this.speed * 5;
         });
     }
 
+    animate() {
+        this.lerp.target += this.speed;
+        this.lerp.current = lerp(
+            this.lerp.current,
+            this.lerp.target,
+            this.interpolationFactor
+        );
+
+        if (this.lerp.target > this.metric) {
+            this.lerp.current -= this.metric * 2;
+            this.lerp.target -= this.metric * 2;
+        }
+
+        this.el.style.transform = `translateX(${this.lerp.current}%)`;
+    }
+
     render() {
-        console.log(this.counter, this.counter2);
-
-        if (this.counter < 100) {
-            this.counter += this.speed;
-            this.DOMElements[0].style.transform = `translate(${this.counter}%, 0%)`;
-        } else {
-            this.counter = -100;
-        }
-
-        if (this.counter2 < 100) {
-            this.counter2 += this.speed;
-            this.DOMElements[1].style.transform = `translate(${this.counter2}%, 0%)`;
-        } else {
-            this.counter2 = -100;
-        }
-
+        this.animate();
         window.requestAnimationFrame(() => this.render());
     }
 }
 
-let textArray = document.getElementsByClassName("item");
-new LoopingText(textArray);
+let elements = document.querySelectorAll(".item");
+
+new LoopingText(elements[0], -100, 0.15, 0.1);
+new LoopingText(elements[1], 0, 0.15, 0.1);
