@@ -1,37 +1,17 @@
-// Utility Function(s)
-
-const lerp = (current, target, factor) => {
-    let holder = current * (1 - factor) + target * factor;
-    holder = parseFloat(holder).toFixed(2);
-    return holder;
-};
-
 class LoopingElement {
-    constructor(
-        el,
-        directionChange,
-        addTargetOnScroll,
-        scrollOptions,
-        currentTranslation,
-        speed,
-        interpolationFactor
-    ) {
-        this.el = el;
+    constructor(element, currentTranslation, speed) {
+        this.element = element;
         this.currentTranslation = currentTranslation;
+        this.speed = speed;
+        this.direction = true;
+        this.scrollTop = 0;
+        this.metric = 100;
+
         this.lerp = {
             current: this.currentTranslation,
             target: this.currentTranslation,
+            factor: 0.2,
         };
-        this.interpolationFactor = interpolationFactor;
-        this.speed = speed;
-        this.metric = 100;
-        this.directionChange = directionChange;
-
-        this.scrollDirection = false;
-        this.scrollTop = 0;
-
-        this.addTargetOnScroll = addTargetOnScroll;
-        this.scrollOptions = scrollOptions;
 
         this.events();
         this.render();
@@ -42,47 +22,22 @@ class LoopingElement {
             let direction =
                 window.pageYOffset || document.documentElement.scrollTop;
             if (direction > this.scrollTop) {
-                this.scrollDirection = true;
-                if (this.addTargetOnScroll) {
-                    if (
-                        this.scrollOptions === "forward" ||
-                        this.scrollOptions === "forwardbackward" ||
-                        this.scrollOptions === "doubleforward"
-                    ) {
-                        this.lerp.target += this.speed * 5;
-                    }
-                    if (this.scrollOptions === "doublebackward") {
-                        this.lerp.target -= this.speed * 5;
-                    }
-                }
+                this.direction = true;
+                this.lerp.target += this.speed * 4;
             } else {
-                this.scrollDirection = false;
-                if (this.addTargetOnScroll) {
-                    if (
-                        this.scrollOptions === "backward" ||
-                        this.scrollOptions === "forwardbackward" ||
-                        this.scrollOptions === "doublebackward"
-                    ) {
-                        this.lerp.target -= this.speed * 5;
-                    }
-
-                    if (this.scrollOptions === "doubleforward") {
-                        this.lerp.target += this.speed * 5;
-                    }
-                }
+                this.direction = false;
+                this.lerp.target -= this.speed * 4;
             }
             this.scrollTop = direction <= 0 ? 0 : direction;
         });
     }
 
+    lerpFunc(current, target, factor) {
+        this.lerp.current = current * (1 - factor) + target * factor;
+    }
+
     goForward() {
         this.lerp.target += this.speed;
-        this.lerp.current = lerp(
-            this.lerp.current,
-            this.lerp.target,
-            this.interpolationFactor
-        );
-
         if (this.lerp.target > this.metric) {
             this.lerp.current -= this.metric * 2;
             this.lerp.target -= this.metric * 2;
@@ -91,26 +46,17 @@ class LoopingElement {
 
     goBackward() {
         this.lerp.target -= this.speed;
-        this.lerp.current = lerp(
-            this.lerp.current,
-            this.lerp.target,
-            this.interpolationFactor
-        );
-
-        if (this.lerp.target < -this.metric - 20) {
+        if (this.lerp.target < -this.metric) {
             this.lerp.current -= -this.metric * 2;
             this.lerp.target -= -this.metric * 2;
         }
     }
 
     animate() {
-        if (this.directionChange === false) {
-            this.goForward();
-        } else {
-            this.scrollDirection ? this.goForward() : this.goBackward();
-        }
+        this.direction ? this.goForward() : this.goBackward();
+        this.lerpFunc(this.lerp.current, this.lerp.target, this.lerp.factor);
 
-        this.el.style.transform = `translateX(${this.lerp.current}%)`;
+        this.element.style.transform = `translateX(${this.lerp.current}%)`;
     }
 
     render() {
@@ -121,11 +67,5 @@ class LoopingElement {
 
 let elements = document.querySelectorAll(".item");
 
-new LoopingElement(elements[0], false, true, "doubleforward", -100, 0.15, 0.1);
-new LoopingElement(elements[1], false, true, "doubleforward", 0, 0.15, 0.1);
-
-new LoopingElement(elements[2], true, true, "none", 100, 0.5, 0.1);
-new LoopingElement(elements[3], true, true, "none", 0, 0.5, 0.1);
-
-new LoopingElement(elements[4], true, true, "forwardbackward", 100, 0.5, 0.1);
-new LoopingElement(elements[5], true, true, "forwardbackward", 0, 0.5, 0.1);
+new LoopingElement(elements[0], 0, 0.2);
+new LoopingElement(elements[1], -100, 0.2);

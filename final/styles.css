@@ -14,7 +14,7 @@ body {
     position: relative;
     overflow: hidden;
     display: flex;
-    min-height: 100vh;
+    min-height: 200vh;
 }
 
 .loop-container {
