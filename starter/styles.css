@@ -8,22 +8,68 @@
 
 body {
     font-family: "Poppins";
+    background-color: rgb(22, 22, 22);
 }
 
 .hero-section {
     position: relative;
     overflow: hidden;
     display: flex;
-    min-height: 200vh;
+    min-height: 75vh;
 }
 
 .loop-container {
-    margin: auto 0;
+    margin-top: 500px;
     white-space: nowrap;
-    font: 500 9vw/1 "Poppins";
+    font-weight: 100;
+    font-size: 9vw;
+    letter-spacing: 5px;
     /* transform: rotate(7deg); */
 }
 
 .item {
     position: absolute;
+}
+
+/* ----------------------------------------------------- */
+
+.image-section {
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    min-height: 75vh;
+}
+
+.second-loop-container {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+.images-wrapper {
+    display: flex;
+    flex-direction: row;
+    gap: 2rem;
+    padding-right: 2rem;
+    position: absolute;
+}
+
+.image-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    width: 300px;
+    height: 440px;
+}
+
+.image-container img {
+    object-fit: cover;
+    min-width: 100%;
+    min-height: 100%;
+}
+
+.item {
+    position: absolute;
+    color: white;
 }
