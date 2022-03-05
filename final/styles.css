@@ -8,22 +8,25 @@
 
 body {
     font-family: "Poppins";
+    background-color: rgb(22, 22, 22);
 }
 
 .hero-section {
     position: relative;
     overflow: hidden;
     display: flex;
-    min-height: 200vh;
+    min-height: 100vh;
 }
 
 .loop-container {
     margin: auto 0;
     white-space: nowrap;
-    font: 500 9vw/1 "Poppins";
+    font-weight: 200;
+    font-size: 9vw;
     /* transform: rotate(7deg); */
 }
 
 .item {
     position: absolute;
+    color: white;
 }
