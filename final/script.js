@@ -23,10 +23,10 @@ class LoopingElement {
                 window.pageYOffset || document.documentElement.scrollTop;
             if (direction > this.scrollTop) {
                 this.direction = true;
-                this.lerp.target += this.speed * 4;
+                this.lerp.target += this.speed * 5;
             } else {
                 this.direction = false;
-                this.lerp.target -= this.speed * 4;
+                this.lerp.target -= this.speed * 5;
             }
             this.scrollTop = direction <= 0 ? 0 : direction;
         });
@@ -67,5 +67,10 @@ class LoopingElement {
 
 let elements = document.querySelectorAll(".item");
 
-new LoopingElement(elements[0], 0, 0.2);
-new LoopingElement(elements[1], -100, 0.2);
+new LoopingElement(elements[0], 0, 0.08);
+new LoopingElement(elements[1], -100, 0.08);
+
+let imagesArray = document.querySelectorAll(".images-wrapper");
+
+let newLol = new LoopingElement(imagesArray[0], 0, 0.1);
+let highLol = new LoopingElement(imagesArray[1], -100, 0.1);
